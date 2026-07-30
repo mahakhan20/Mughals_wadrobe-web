@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Mughals Wardrobe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+</head>
+<body>
+
+    <section id="header">
+        <div class="brand-left">Mughals Wardrobe</div>
+    
+        <div class="logo-center">
+            <img src="images/logoblack.png" alt="Logo">
+        </div>
+    
+        <ul id="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a class="active" href="signup.html"><i class="fas fa-user"></i></a></li>
+            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i><span id="cart-count" class="cart-count-badge">0</span></a></li>
+        </ul>
+        <button id="mobile-menu" aria-label="Toggle menu" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </section>
+
+    <section id="signup-popup">
+        <div class="popup">
+            <div class="close-btn">&times;</div>
+            <div class="form">
+                <h2>Log in</h2>
+                <div class="form-element">
+                    <label for="email">E-mail</label>
+                    <input type="text" id="email" placeholder="Enter your email">
+                </div>
+                <div class="form-element">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                <div class="form-element">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember Me</label>
+                </div>
+                <div class="form-element">
+                    <button>Sign in</button>
+                </div>
+                <div class="form-element">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+</html>.

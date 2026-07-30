@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Mughals Wardrobe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+</head>
+<body>
+
+    <section id="header">
+        <div class="brand-left">Mughals Wardrobe</div>
+    
+        <div class="logo-center">
+            <img src="images/logoblack.png" alt="Logo">
+        </div>
+    
+        <ul id="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signup.html"><i class="fas fa-user"></i></a></li>
+            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i><span id="cart-count" class="cart-count-badge">0</span></a></li>
+        </ul>
+        <button id="mobile-menu" aria-label="Toggle menu" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </section>
+
+    <section id="page-header">
+        <h2>𝗦𝗵𝗼𝗽 𝗡𝗼𝘄</h2>
+        <p>Save more with coupons!</p>
+    </section>
+
+    <section id="product1" class="section-p1">
+        <div id="shop-products" class="pro-container">
+            <p class="loading-text">Loading products...</p>
+        </div>
+    </section>
+
+    <section id="pagination" class="section-p1">
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#"><img src="images/right-chevron.png" alt="Cart" style="width: 24px; height: 15px;" class="arrow"></a>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newsletter">
+            <h4>Sign Up & Get 10% Off!</h4>
+            <p>Get E-mail updates about our latest collection and <span> special offers.</span></p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your e-mail address">
+            <button class="normal">Sign Up</button>
+        </div>
+    </section>
+    
+    <footer class="section-p1">
+        <div class="footer-container">
+          
+            <div class="footer-column">
+              <img src="images/logoblack.png" alt="Logo" class="footer-logo">
+            </div>
+       
+            <div class="footer-column">
+              <h3>Follow Us</h3>
+              <div class="social-icons">
+                <img src="images/instagram.png" alt="Instagram">
+                <img src="images/gmail.png" alt="Mail">
+                <img src="images/youtube.png" alt="YouTube">
+              </div>
+            </div>
+        
+            <div class="footer-column">
+              <h3>Payment Options</h3>
+              <div class="payment-icons">
+                <img src="images/visa.png" alt="Visa">
+                <img src="images/card.png" alt="MasterCard">
+              </div>
+            </div>
+          </div>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>.
