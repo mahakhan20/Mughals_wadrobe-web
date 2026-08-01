@@ -96,6 +96,7 @@ Test these using **Postman** or **curl** while the server is running.
 - [Day 7 – Product API (GET Routes)](docs/day7.md)
 - [Day 8 – Admin Product Routes](docs/day8.md)
 - [Day 9 – Connecting Shop & Single Product Pages + Working Cart](docs/day9.md)
+- [Module 2 – Complete Summary Report](docs/module2-summary.md)
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)

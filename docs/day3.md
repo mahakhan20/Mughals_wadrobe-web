@@ -6,7 +6,7 @@
 Set up the project repository and folder structure, then build the first
 responsive page — the Homepage.
 
-## Work Completed
+## Work Completed 
 
 ### 1. GitHub Repository & Project Setup
 - Created the ShopSphere (Mughals Wardrobe) repository on GitHub.
