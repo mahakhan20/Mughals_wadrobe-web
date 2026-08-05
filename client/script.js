@@ -175,71 +175,68 @@ document.addEventListener('DOMContentLoaded', function () {
   loadHomeProducts();
 });
 
+// Cart functionality — now backed by the real Cart API
+// (guest cart identified by a random sessionId in localStorage)
+// =========================================================
+const SESSION_ID_KEY = 'shopsphere_session_id';
 
-// Cart functionality (localStorage-based for now — a full
-// backend Cart API is planned for Module 3)
-const CART_KEY = 'shopsphere_cart';
+function getSessionId() {
+  let sessionId = localStorage.getItem(SESSION_ID_KEY);
+  if (!sessionId) {
+    sessionId = 'guest-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+    localStorage.setItem(SESSION_ID_KEY, sessionId);
+  }
+  return sessionId;
+}
 
-function getCart() {
+async function fetchCart() {
+  const res = await fetch(`${API_BASE_URL}/cart/${getSessionId()}`);
+  const result = await res.json();
+  return result.data;
+}
+
+async function updateCartBadge() {
   try {
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-  } catch (e) {
-    return [];
+    const cart = await fetchCart();
+    const count = cart.items.reduce((sum, i) => sum + i.quantity, 0);
+    document.querySelectorAll('#cart-count').forEach((el) => { el.textContent = count; });
+  } catch (err) {
+    console.error('Failed to update cart badge:', err);
   }
 }
 
-function saveCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  updateCartBadge();
-}
-
-function updateCartBadge() {
-  const cart = getCart();
-  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-  document.querySelectorAll('#cart-count').forEach((el) => {
-    el.textContent = count;
-  });
-}
-
-function addToCart(product, quantity) {
+async function addToCart(product, quantity) {
   quantity = quantity && quantity > 0 ? quantity : 1;
-  const cart = getCart();
-  const existing = cart.find((item) => item.id === product.id);
-
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: quantity,
+  try {
+    const res = await fetch(`${API_BASE_URL}/cart/${getSessionId()}/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productId: product.id, name: product.name,
+        price: product.price, image: product.image, quantity,
+      }),
     });
+    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+    await updateCartBadge();
+    alert(`${product.name} added to cart!`);
+  } catch (err) {
+    console.error('Add to cart failed:', err);
+    alert('Could not add to cart. Make sure the backend server is running.');
   }
-
-  saveCart(cart);
-  alert(`${product.name} added to cart!`);
 }
 
-// Wires up "Add to Cart" click handlers for product cards (Shop page +
-// Related Products), using event delegation so it works for dynamically
-// rendered cards too.
 document.addEventListener('click', function (e) {
   const cartBtn = e.target.closest('.add-to-cart-icon');
   if (cartBtn) {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
-      id: cartBtn.dataset.id,
-      name: cartBtn.dataset.name,
-      price: Number(cartBtn.dataset.price),
-      image: cartBtn.dataset.image,
+      id: cartBtn.dataset.id, name: cartBtn.dataset.name,
+      price: Number(cartBtn.dataset.price), image: cartBtn.dataset.image,
     }, 1);
   }
 });
 
-// Wires up the "Add To Cart" button on the Single Product page
 document.addEventListener('DOMContentLoaded', function () {
   const addBtn = document.getElementById('pd-add-cart');
   if (addBtn) {
@@ -247,81 +244,109 @@ document.addEventListener('DOMContentLoaded', function () {
       const qtyInput = document.getElementById('pd-qty');
       const qty = qtyInput ? parseInt(qtyInput.value, 10) : 1;
       addToCart({
-        id: addBtn.dataset.id,
-        name: addBtn.dataset.name,
-        price: Number(addBtn.dataset.price),
-        image: addBtn.dataset.image,
+        id: addBtn.dataset.id, name: addBtn.dataset.name,
+        price: Number(addBtn.dataset.price), image: addBtn.dataset.image,
       }, qty);
     });
   }
-
   updateCartBadge();
   renderCartPage();
 });
 
-//Cart Page: render items from localStorage
-function renderCartPage() {
+async function renderCartPage() {
   const tbody = document.getElementById('cart-body');
-  if (!tbody) return; // not on the Cart page
+  if (!tbody) return;
 
-  const cart = getCart();
-
-  if (cart.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6">Your cart is empty. <a href="shop.html">Go shopping →</a></td></tr>';
-    updateCartTotals();
-    return;
+  try {
+    const cart = await fetchCart();
+    if (cart.items.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6">Your cart is empty. <a href="shop.html">Go shopping →</a></td></tr>';
+      updateCartTotalsDisplay(0);
+      return;
+    }
+    tbody.innerHTML = cart.items.map((item) => {
+      const imgSrc = item.image ? `images/${item.image}` : 'images/f1.jpeg';
+      const subtotal = item.price * item.quantity;
+      return `
+        <tr data-id="${item.product}">
+          <td data-label="Remove"><img src="images/cross.png" style="width:24px;height:24px;cursor:pointer;" class="remove-item" data-id="${item.product}"></td>
+          <td data-label="Image"><img src="${imgSrc}" style="width:60px;"></td>
+          <td data-label="Product">${item.name}</td>
+          <td data-label="Price">Rs:${item.price}</td>
+          <td data-label="Quantity"><input type="number" min="1" value="${item.quantity}" class="cart-qty-input" data-id="${item.product}"></td>
+          <td data-label="SubTotal">Rs:${subtotal}</td>
+        </tr>`;
+    }).join('');
+    updateCartTotalsDisplay(cart.subtotal);
+  } catch (err) {
+    console.error('Failed to load cart:', err);
+    tbody.innerHTML = `<tr><td colspan="6">Could not load cart. Make sure the backend server is running at ${API_BASE_URL}.</td></tr>`;
   }
-
-  tbody.innerHTML = cart.map((item) => {
-    const imgSrc = item.image ? `images/${item.image}` : 'images/f1.jpeg';
-    const subtotal = item.price * item.quantity;
-    return `
-      <tr data-id="${item.id}">
-        <td data-label="Remove"><img src="images/cross.png" style="width: 24px; height: 24px; cursor: pointer;" class="remove-item" data-id="${item.id}"></td>
-        <td data-label="Image"><img src="${imgSrc}" style="width: 60px;"></td>
-        <td data-label="Product">${item.name}</td>
-        <td data-label="Price">Rs:${item.price}</td>
-        <td data-label="Quantity"><input type="number" min="1" value="${item.quantity}" class="cart-qty-input" data-id="${item.id}"></td>
-        <td data-label="SubTotal">Rs:${subtotal}</td>
-      </tr>`;
-  }).join('');
-
-  updateCartTotals();
 }
 
-function updateCartTotals() {
-  const cart = getCart();
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+function updateCartTotalsDisplay(subtotal) {
   const subtotalEl = document.getElementById('cart-subtotal');
   const totalEl = document.getElementById('cart-total');
   if (subtotalEl) subtotalEl.textContent = `Rs:${subtotal}`;
   if (totalEl) totalEl.textContent = `Rs:${subtotal}`;
 }
 
-// Remove item from cart
-document.addEventListener('click', function (e) {
+document.addEventListener('click', async function (e) {
   const removeBtn = e.target.closest('.remove-item');
   if (removeBtn) {
-    const id = removeBtn.dataset.id;
-    const cart = getCart().filter((item) => item.id !== id);
-    saveCart(cart);
-    renderCartPage();
+    try {
+      await fetch(`${API_BASE_URL}/cart/${getSessionId()}/item/${removeBtn.dataset.id}`, { method: 'DELETE' });
+      await renderCartPage();
+      await updateCartBadge();
+    } catch (err) {
+      console.error('Remove item failed:', err);
+    }
   }
 });
 
-// Update quantity in cart
-document.addEventListener('change', function (e) {
+document.addEventListener('change', async function (e) {
   if (e.target.classList && e.target.classList.contains('cart-qty-input')) {
-    const id = e.target.dataset.id;
     let qty = parseInt(e.target.value, 10);
     if (!qty || qty < 1) qty = 1;
-
-    const cart = getCart();
-    const item = cart.find((p) => p.id === id);
-    if (item) {
-      item.quantity = qty;
-      saveCart(cart);
-      renderCartPage();
+    try {
+      await fetch(`${API_BASE_URL}/cart/${getSessionId()}/item/${e.target.dataset.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: qty }),
+      });
+      await renderCartPage();
+      await updateCartBadge();
+    } catch (err) {
+      console.error('Update quantity failed:', err);
     }
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const signupForm = document.getElementById('signup-form'); // add id="signup-form" to your <form> in signup.html
+  if (signupForm) {
+    signupForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password }),
+        });
+        const result = await res.json();
+        if (!res.ok) {
+          alert(result.message || 'Signup failed');
+          return;
+        }
+        alert('Account created! You can now log in.');
+      } catch (err) {
+        console.error('Signup failed:', err);
+        alert('Could not reach the server. Make sure the backend is running.');
+      }
+    });
   }
 });

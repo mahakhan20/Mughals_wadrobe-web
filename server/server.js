@@ -3,19 +3,24 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const productRoutes = require("./routes/productRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api/cart", cartRoutes);
+app.use("/api/auth", authRoutes);
 
 // Connect to local MongoDB
 connectDB();
 
 // Health check route
 app.get("/", (req, res) => {
-  res.json({ message: "ShopSphere API is running (local)" });
+  res.json({ message: "Mughals Wadrobe API is running (local)" });
 });
 
 // API routes

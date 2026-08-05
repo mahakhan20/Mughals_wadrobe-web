@@ -80,6 +80,11 @@ like VS Code's "Live Server" extension for the best experience.
 | POST   | `/api/products`        | Create a new product      |
 | PUT    | `/api/products/:id`    | Update an existing product|
 | DELETE | `/api/products/:id`    | Delete a product          |
+| POST   | `/api/cart/:sessionId/add`         | Add item to cart       |
+| PUT    | `/api/cart/:sessionId/item/:id`    | Update item quantity   |
+| DELETE | `/api/cart/:sessionId/item/:id`    | Remove item from cart  |
+| GET    | `/api/cart/:sessionId`             | Get cart               |
+| POST   | `/api/auth/signup`                 | Create a new account   |
 
 Test these using **Postman** or **curl** while the server is running.
 
@@ -92,11 +97,16 @@ Test these using **Postman** or **curl** while the server is running.
 - [Module 1 – Complete Summary Report](docs/module1-summary.md)
 
 ## Module 2 Progress
-- [Day 6 – Product Schema Design](docs/day6.md)
-- [Day 7 – Product API (GET Routes)](docs/day7.md)
-- [Day 8 – Admin Product Routes](docs/day8.md)
-- [Day 9 – Connecting Shop & Single Product Pages + Working Cart](docs/day9.md)
+- [Day 6 – Product Schema Design](docs/day8.md)
+- [Day 7 – Product API (GET Routes)](docs/day9.md)
+- [Day 8 – Admin Product Routes](docs/day10.md)
+- [Day 9 – Connecting Shop & Single Product Pages + Working Cart](docs/day11.md)
 - [Module 2 – Complete Summary Report](docs/module2-summary.md)
+
+## Module 3 Progress
+- [Day 10 – Backend Cart API](docs/day12.md)
+- [Day 11 – Connecting Cart Page to Backend](docs/day13-module3.md)
+- [Day 12 – Signup Backend (bcrypt)](docs/day14.md)
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)
