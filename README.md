@@ -104,9 +104,9 @@ Test these using **Postman** or **curl** while the server is running.
 - [Module 2 – Complete Summary Report](docs/module2-summary.md)
 
 ## Module 3 Progress
-- [Day 10 – Backend Cart API](docs/day12.md)
-- [Day 11 – Connecting Cart Page to Backend](docs/day13-module3.md)
-- [Day 12 – Signup Backend (bcrypt)](docs/day14.md)
+- [Day 12 – Backend Cart API](docs/day12.md)
+- [Day 13 – Connecting Cart Page to Backend](docs/day13-module3.md)
+- [Day 14 – Signup Backend (bcrypt)](docs/day14.md)
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)
