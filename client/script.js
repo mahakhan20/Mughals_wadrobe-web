@@ -350,3 +350,105 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// Auth (Login / Signup) — Module 3, Day 3
+function showAuthForm(which) {
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  const tabLogin = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+  const heading = document.getElementById('auth-heading');
+  const subheading = document.getElementById('auth-subheading');
+
+  if (!loginForm || !signupForm) return;
+
+  if (which === 'signup') {
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'flex';
+    tabLogin.classList.remove('active-tab');
+    tabSignup.classList.add('active-tab');
+    heading.textContent = 'Create Your Account';
+    subheading.textContent = 'Sign up to start shopping with Mughals Wardrobe.';
+  } else {
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'flex';
+    tabSignup.classList.remove('active-tab');
+    tabLogin.classList.add('active-tab');
+    heading.textContent = 'Welcome Back';
+    subheading.textContent = 'Log in to your account, or create a new one.';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const signupForm = document.getElementById('signup-form');
+  if (signupForm) {
+    signupForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const msgEl = document.getElementById('signup-message');
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password }),
+        });
+        const result = await res.json();
+
+        if (!res.ok) {
+          msgEl.textContent = result.message || 'Signup failed';
+          msgEl.className = 'auth-message error';
+          return;
+        }
+
+        msgEl.textContent = 'Account created! You can now log in.';
+        msgEl.className = 'auth-message success';
+        signupForm.reset();
+        setTimeout(() => showAuthForm('login'), 1200);
+      } catch (err) {
+        console.error('Signup failed:', err);
+        msgEl.textContent = 'Could not reach the server. Make sure the backend is running.';
+        msgEl.className = 'auth-message error';
+      }
+    });
+  }
+
+  const loginForm = document.getElementById('login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const msgEl = document.getElementById('login-message');
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const result = await res.json();
+
+        if (!res.ok) {
+          msgEl.textContent = result.message || 'Login failed';
+          msgEl.className = 'auth-message error';
+          return;
+        }
+
+        // Store token + basic user info for later use (protecting routes, showing "Hi, Name" etc.)
+        localStorage.setItem('shopsphere_token', result.token);
+        localStorage.setItem('shopsphere_user', JSON.stringify(result.data));
+
+        msgEl.textContent = `Welcome back, ${result.data.name}!`;
+        msgEl.className = 'auth-message success';
+        setTimeout(() => { window.location.href = 'index.html'; }, 800);
+      } catch (err) {
+        console.error('Login failed:', err);
+        msgEl.textContent = 'Could not reach the server. Make sure the backend is running.';
+        msgEl.className = 'auth-message error';
+      }
+    });
+  }
+});

@@ -84,7 +84,8 @@ like VS Code's "Live Server" extension for the best experience.
 | PUT    | `/api/cart/:sessionId/item/:id`    | Update item quantity   |
 | DELETE | `/api/cart/:sessionId/item/:id`    | Remove item from cart  |
 | GET    | `/api/cart/:sessionId`             | Get cart               |
-| POST   | `/api/auth/signup`                 | Create a new account   |
+| POST   | `/api/auth/signup`                 | Create a new account    |
+| POST   | `/api/auth/login`                  | Log in, returns a JWT   |
 
 Test these using **Postman** or **curl** while the server is running.
 
@@ -107,6 +108,7 @@ Test these using **Postman** or **curl** while the server is running.
 - [Day 12 – Backend Cart API](docs/day12.md)
 - [Day 13 – Connecting Cart Page to Backend](docs/day13-module3.md)
 - [Day 14 – Signup Backend (bcrypt)](docs/day14.md)
+- [Day 15 – Login (JWT) & Signup/Login Page](docs/day15.md)
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)

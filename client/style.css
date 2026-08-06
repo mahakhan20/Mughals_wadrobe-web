@@ -1062,3 +1062,112 @@ body {
         padding: 10px 0;
     }
 }
+/* =========================================================
+   AUTH (Login / Signup) PAGE
+   ========================================================= */
+.auth-container {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 40px 35px;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.auth-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: 0.3s;
+}
+
+.auth-tab.active-tab {
+    color: #088178;
+    border-bottom: 3px solid #088178;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.auth-form input {
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #088178;
+}
+
+.auth-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    font-size: 13px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #555;
+}
+
+.forgot-link {
+    color: #088178;
+    text-decoration: none;
+}
+
+.auth-form button.normal {
+    margin-top: 22px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.auth-message {
+    margin-top: 12px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.auth-message.success {
+    color: #088178;
+}
+
+.auth-message.error {
+    color: #d32f2f;
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        max-width: 90%;
+        padding: 30px 20px;
+    }
+}

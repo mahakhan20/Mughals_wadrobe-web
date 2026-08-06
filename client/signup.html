@@ -1,31 +1,23 @@
 <!DOCTYPE html>
-<html lang = "en">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Mughals Wardrobe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mughals Wardrobe - Sign In / Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" href="images/favicon.png" type="image/png">
-
 </head>
 <body>
 
     <section id="header">
-        <div class="brand-left">Mughals Wardrobe</div>
-    
-        <div class="logo-center">
-            <img src="images/logoblack.png" alt="Logo">
-        </div>
-    
+        <a href="index.html"><div class="brand-left">Mughals Wardrobe</div></a>
+        <div class="logo-center"><img src="images/logo.png" alt="" style="width: 60px;"></div>
         <ul id="navbar">
             <li><a href="index.html">Home</a></li>
             <li><a href="shop.html">Shop</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a class="active" href="signup.html"><i class="fas fa-user"></i></a></li>
+            <li><a class="active" href="signup.html">Sign In</a></li>
             <li><a href="cart.html"><i class="fas fa-shopping-cart"></i><span id="cart-count" class="cart-count-badge">0</span></a></li>
         </ul>
         <button id="mobile-menu" aria-label="Toggle menu" onclick="toggleMenu()">
@@ -33,35 +25,71 @@
         </button>
     </section>
 
-    <section id="signup-popup">
-        <div class="popup">
-            <div class="close-btn">&times;</div>
-            <div class="form">
-                <h2>Log in</h2>
-                <div class="form-element">
-                    <label for="email">E-mail</label>
-                    <input type="text" id="email" placeholder="Enter your email">
-                </div>
-                <div class="form-element">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter password">
-                </div>
-                <div class="form-element">
-                    <input type="checkbox" id="remember-me">
-                    <label for="remember-me">Remember Me</label>
-                </div>
-                <div class="form-element">
-                    <button>Sign in</button>
-                </div>
-                <div class="form-element">
-                    <a href="#">Forgot password?</a>
-                </div>
-            </div>
-        </div>
-
+    <section id="page-header" class="contact-header">
+        <h2 id="auth-heading">Welcome Back</h2>
+        <p id="auth-subheading">Log in to your account, or create a new one.</p>
     </section>
 
-    <script src="script.js"></script>
+    <section id="auth-section" class="section-p1">
+        <div class="auth-container">
 
+            <div class="auth-tabs">
+                <button type="button" id="tab-login" class="auth-tab active-tab" onclick="showAuthForm('login')">Log In</button>
+                <button type="button" id="tab-signup" class="auth-tab" onclick="showAuthForm('signup')">Sign Up</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="auth-form">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required placeholder="you@example.com">
+
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="Enter your password">
+
+                <div class="auth-row">
+                    <label class="remember-me"><input type="checkbox"> Remember me</label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="normal">Log In</button>
+                <p id="login-message" class="auth-message"></p>
+            </form>
+
+            <!-- SIGNUP FORM (hidden by default) -->
+            <form id="signup-form" class="auth-form" style="display: none;">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" required placeholder="Your full name">
+
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" required placeholder="you@example.com">
+
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required minlength="6" placeholder="At least 6 characters">
+
+                <button type="submit" class="normal">Create Account</button>
+                <p id="signup-message" class="auth-message"></p>
+            </form>
+
+        </div>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get email updates about our latest shop and special offers.</p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your email address">
+            <button class="normal">Sign Up</button>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+        <div class="footer-container">
+            <p>&copy; 2026 Mughals Wardrobe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
-</html>.
+</html>
