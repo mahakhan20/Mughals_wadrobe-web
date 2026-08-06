@@ -1,4 +1,4 @@
-# Day 13 – Login (JWT) & Connecting the Signup/Login Page
+# Day 15 – Login (JWT) & Connecting the Signup/Login Page
 **Date:** August 6, 2026
 **Module:** 3, Day 4 (Aug 03 – Aug 09, 2026)
 
