@@ -70,17 +70,18 @@
       </section>
     
     <section id="form-details">
-        <form action="">
+        <form id="contact-form">
             <span>LEAVE A MESSAGE</span>
             <h2>We love to hear from you</h2>
-            <input type="text" placeholder="Your Name">
-            <input type="text" placeholder="E-mail">
-            <input type="text" placeholder="Subject">
-            <textarea name="" id="" cols="" rows="10" placeholder="Your Message"></textarea>
-            <button class="normal">Submit</button> 
+             <input type="text" id="contact-name" placeholder="Your Name" required>
+             <input type="email" id="contact-email" placeholder="Your Email" required>
+             <input type="text" id="contact-subject" placeholder="Subject" required>
+             <textarea id="contact-message" placeholder="Your Message" required></textarea>
+             <button type="submit" class="normal">Send Message</button>
+             <p id="contact-form-message"></p>
         </form>
     </section>
-    
+
     <section id="newsletter" class="section-p1 section-m1">
         <div class="newsletter">
             <h4>Sign Up & Get 10% Off!</h4>

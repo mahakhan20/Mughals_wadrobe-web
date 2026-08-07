@@ -1171,3 +1171,13 @@ body {
         padding: 30px 20px;
     }
 }
+
+.navbar-greeting {
+    font-weight: 600;
+    color: #088178;
+    margin-right: 8px;
+}
+
+#navbar li #logout-link {
+    color: #d32f2f;
+}

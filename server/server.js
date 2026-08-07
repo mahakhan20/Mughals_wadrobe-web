@@ -5,7 +5,7 @@ const connectDB = require("./config/db");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const authRoutes = require("./routes/authRoutes");
-
+const contRoutes = require("./routes/contactRoutes");
 
 const app = express();
 
@@ -14,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/cart", cartRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/contact", contRoutes);
 
 // Connect to local MongoDB
 connectDB();

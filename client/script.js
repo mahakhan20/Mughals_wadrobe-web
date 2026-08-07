@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
+// Returns the Authorization header if the user is logged in, otherwise
+// an empty object - spread this into any fetch() headers.
+function getAuthHeaders() {
+  const token = localStorage.getItem('shopsphere_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 // Builds one product card's HTML (shared by Shop page + Related Products)
 function buildProductCard(product) {
   const imgSrc = product.image ? `images/${product.image}` : 'images/f1.jpeg';
@@ -71,7 +78,7 @@ async function loadShopProducts() {
 // ---- Single Product page: fetch and render one product by ?id= ----
 async function loadSingleProduct() {
   const detailsSection = document.getElementById('single-pro-details');
-  if (!detailsSection) return; 
+  if (!detailsSection) return;
 
   const params = new URLSearchParams(window.location.search);
   const productId = params.get('id');
@@ -139,11 +146,11 @@ async function loadRelatedProducts(category, excludeId) {
   }
 }
 
-// Home page: fetch and render Featured + New Arrivals 
+// ---- Home page: fetch and render Featured + New Arrivals ----
 async function loadHomeProducts() {
   const featured = document.getElementById('featured-products');
   const newArrivals = document.getElementById('new-arrivals');
-  if (!featured && !newArrivals) return; 
+  if (!featured && !newArrivals) return;
 
   try {
     const res = await fetch(`${API_BASE_URL}/products`);
@@ -175,27 +182,21 @@ document.addEventListener('DOMContentLoaded', function () {
   loadHomeProducts();
 });
 
-// Cart functionality — now backed by the real Cart API
-// (guest cart identified by a random sessionId in localStorage)
-// =========================================================
-const SESSION_ID_KEY = 'shopsphere_session_id';
-
-function getSessionId() {
-  let sessionId = localStorage.getItem(SESSION_ID_KEY);
-  if (!sessionId) {
-    sessionId = 'guest-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
-    localStorage.setItem(SESSION_ID_KEY, sessionId);
-  }
-  return sessionId;
-}
-
+// Cart functionality — requires login. Add to Cart is blocked
+// entirely if the user isn't signed in.
 async function fetchCart() {
-  const res = await fetch(`${API_BASE_URL}/cart/${getSessionId()}`);
+  const res = await fetch(`${API_BASE_URL}/cart`, {
+    headers: { ...getAuthHeaders() },
+  });
   const result = await res.json();
   return result.data;
 }
 
 async function updateCartBadge() {
+  if (!localStorage.getItem('shopsphere_token')) {
+    document.querySelectorAll('#cart-count').forEach((el) => { el.textContent = '0'; });
+    return;
+  }
   try {
     const cart = await fetchCart();
     const count = cart.items.reduce((sum, i) => sum + i.quantity, 0);
@@ -206,11 +207,17 @@ async function updateCartBadge() {
 }
 
 async function addToCart(product, quantity) {
+  if (!localStorage.getItem('shopsphere_token')) {
+    alert('Please log in to add items to your cart.');
+    window.location.href = 'signup.html';
+    return;
+  }
+
   quantity = quantity && quantity > 0 ? quantity : 1;
   try {
-    const res = await fetch(`${API_BASE_URL}/cart/${getSessionId()}/add`, {
+    const res = await fetch(`${API_BASE_URL}/cart/add`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
       body: JSON.stringify({
         productId: product.id, name: product.name,
         price: product.price, image: product.image, quantity,
@@ -257,6 +264,12 @@ async function renderCartPage() {
   const tbody = document.getElementById('cart-body');
   if (!tbody) return;
 
+  if (!localStorage.getItem('shopsphere_token')) {
+    tbody.innerHTML = '<tr><td colspan="6">Please <a href="signup.html">log in</a> to view your cart.</td></tr>';
+    updateCartTotalsDisplay(0);
+    return;
+  }
+
   try {
     const cart = await fetchCart();
     if (cart.items.length === 0) {
@@ -295,7 +308,10 @@ document.addEventListener('click', async function (e) {
   const removeBtn = e.target.closest('.remove-item');
   if (removeBtn) {
     try {
-      await fetch(`${API_BASE_URL}/cart/${getSessionId()}/item/${removeBtn.dataset.id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE_URL}/cart/item/${removeBtn.dataset.id}`, {
+        method: 'DELETE',
+        headers: { ...getAuthHeaders() },
+      });
       await renderCartPage();
       await updateCartBadge();
     } catch (err) {
@@ -309,9 +325,9 @@ document.addEventListener('change', async function (e) {
     let qty = parseInt(e.target.value, 10);
     if (!qty || qty < 1) qty = 1;
     try {
-      await fetch(`${API_BASE_URL}/cart/${getSessionId()}/item/${e.target.dataset.id}`, {
+      await fetch(`${API_BASE_URL}/cart/item/${e.target.dataset.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify({ quantity: qty }),
       });
       await renderCartPage();
@@ -322,36 +338,7 @@ document.addEventListener('change', async function (e) {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  const signupForm = document.getElementById('signup-form'); // add id="signup-form" to your <form> in signup.html
-  if (signupForm) {
-    signupForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const name = document.getElementById('signup-name').value;
-      const email = document.getElementById('signup-email').value;
-      const password = document.getElementById('signup-password').value;
-
-      try {
-        const res = await fetch(`${API_BASE_URL}/auth/signup`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, password }),
-        });
-        const result = await res.json();
-        if (!res.ok) {
-          alert(result.message || 'Signup failed');
-          return;
-        }
-        alert('Account created! You can now log in.');
-      } catch (err) {
-        console.error('Signup failed:', err);
-        alert('Could not reach the server. Make sure the backend is running.');
-      }
-    });
-  }
-});
-
-// Auth (Login / Signup) — Module 3, Day 3
+// Auth (Login / Signup) — Module 3
 function showAuthForm(which) {
   const loginForm = document.getElementById('login-form');
   const signupForm = document.getElementById('signup-form');
@@ -441,6 +428,18 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('shopsphere_token', result.token);
         localStorage.setItem('shopsphere_user', JSON.stringify(result.data));
 
+        // Merge anything added to the cart before logging in into the
+        // real account cart, so it isn't lost.
+        try {
+          await fetch(`${API_BASE_URL}/cart/${getSessionId()}/merge`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${result.token}` },
+          });
+          await updateCartBadge();
+        } catch (mergeErr) {
+          console.error('Cart merge failed:', mergeErr);
+        }
+
         msgEl.textContent = `Welcome back, ${result.data.name}!`;
         msgEl.className = 'auth-message success';
         setTimeout(() => { window.location.href = 'index.html'; }, 800);
@@ -452,3 +451,74 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// Contact form
+document.addEventListener('DOMContentLoaded', function () {
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const subject = document.getElementById('contact-subject').value;
+      const message = document.getElementById('contact-message').value;
+      const msgEl = document.getElementById('contact-form-message');
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message }),
+        });
+        const result = await res.json();
+
+        if (!res.ok) {
+          msgEl.textContent = result.message || 'Something went wrong';
+          msgEl.className = 'auth-message error';
+          return;
+        }
+
+        msgEl.textContent = result.message;
+        msgEl.className = 'auth-message success';
+        contactForm.reset();
+      } catch (err) {
+        console.error('Contact form submit failed:', err);
+        msgEl.textContent = 'Could not reach the server. Make sure the backend is running.';
+        msgEl.className = 'auth-message error';
+      }
+    });
+  }
+});
+
+// Navbar login state — "Hi, Name" + Logout (runs on every page)
+function updateNavbarAuthState() {
+  const userJson = localStorage.getItem('shopsphere_user');
+  const navLinks = document.querySelectorAll('#navbar a[href="signup.html"]');
+
+  if (!userJson || navLinks.length === 0) return;
+
+  const user = JSON.parse(userJson);
+  const firstName = user.name.split(' ')[0];
+
+  navLinks.forEach((link) => {
+    const li = link.closest('li');
+    if (!li) return;
+
+    li.innerHTML = `
+      <span class="navbar-greeting">Hi, ${firstName}</span>
+      <a href="#" id="logout-link">Logout</a>
+    `;
+  });
+
+  const logoutLink = document.getElementById('logout-link');
+  if (logoutLink) {
+    logoutLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      localStorage.removeItem('shopsphere_token');
+      localStorage.removeItem('shopsphere_user');
+      window.location.href = 'index.html';
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', updateNavbarAuthState);

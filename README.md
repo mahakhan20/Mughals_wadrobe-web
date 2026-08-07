@@ -73,19 +73,22 @@ like VS Code's "Live Server" extension for the best experience.
 
 ## API Endpoints (Products)
 
-| Method | Endpoint              | Description              |
-|--------|------------------------|---------------------------|
-| GET    | `/api/products`        | Get all products          |
-| GET    | `/api/products/:id`    | Get a single product      |
-| POST   | `/api/products`        | Create a new product      |
-| PUT    | `/api/products/:id`    | Update an existing product|
-| DELETE | `/api/products/:id`    | Delete a product          |
-| POST   | `/api/cart/:sessionId/add`         | Add item to cart       |
-| PUT    | `/api/cart/:sessionId/item/:id`    | Update item quantity   |
-| DELETE | `/api/cart/:sessionId/item/:id`    | Remove item from cart  |
-| GET    | `/api/cart/:sessionId`             | Get cart               |
-| POST   | `/api/auth/signup`                 | Create a new account    |
-| POST   | `/api/auth/login`                  | Log in, returns a JWT   |
+| Method | Endpoint                    | Description                          | Auth Required |
+|--------|------------------------------|---------------------------------------|----------------|
+| GET    | `/api/cart`                  | Get the logged-in user's cart         | Yes |
+| POST   | `/api/cart/add`               | Add an item to the cart               | Yes |
+| PUT    | `/api/cart/item/:productId`   | Update an item's quantity             | Yes |
+| DELETE | `/api/cart/item/:productId`   | Remove an item from the cart          | Yes |
+| DELETE | `/api/cart`                   | Clear the entire cart                 | Yes |
+| POST   | `/api/auth/signup`            | Create a new account                  | No |
+| POST   | `/api/auth/login`             | Log in, returns a JWT                 | No |
+| POST   | `/api/contact`                | Submit a contact message              | No |
+| GET    | `/api/contact`                | View all messages (admin)             | Yes |
+| GET    | `/api/products`               | Get all products                      | No |
+| GET    | `/api/products/:id`           | Get a single product                  | No |
+| POST   | `/api/products`               | Create a product (admin)              | Yes |
+| PUT    | `/api/products/:id`           | Update a product (admin)              | Yes |
+| DELETE | `/api/products/:id`           | Delete a product (admin)              | Yes |
 
 Test these using **Postman** or **curl** while the server is running.
 
@@ -109,6 +112,7 @@ Test these using **Postman** or **curl** while the server is running.
 - [Day 13 – Connecting Cart Page to Backend](docs/day13-module3.md)
 - [Day 14 – Signup Backend (bcrypt)](docs/day14.md)
 - [Day 15 – Login (JWT) & Signup/Login Page](docs/day15.md)
+- [Day 16 – Contact Backend, Navbar Login State, Protected Admin Routes & Cart Redesign](docs/day16.md)
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)

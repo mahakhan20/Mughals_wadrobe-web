@@ -1,20 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const {
-  getAllProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/productController");
+const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require("../controllers/productController");
+const { requireAuth } = require("../middleware/authMiddleware");
 
-// GET /api/products        -> get all products
-// POST /api/products       -> create a new product (admin)
-router.route("/").get(getAllProducts).post(createProduct);
+// Public - anyone can browse products
+router.route("/").get(getAllProducts).post(requireAuth, createProduct);
 
-// GET /api/products/:id    -> get a single product
-// PUT /api/products/:id    -> update a product (admin)
-// DELETE /api/products/:id -> delete a product (admin)
-router.route("/:id").get(getProductById).put(updateProduct).delete(deleteProduct);
+router.route("/:id")
+  .get(getProductById)
+  .put(requireAuth, updateProduct)
+  .delete(requireAuth, deleteProduct);
 
 module.exports = router;
