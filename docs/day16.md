@@ -1,6 +1,6 @@
 # Day 16 – Contact Backend, Navbar Login State & Protected Admin Routes
-**Date:** August 8, 2026
-**Module:** 3, Day 6 (Aug 03 – Aug 09, 2026)
+**Date:** August 7, 2026
+**Module:** 3, Day 5 (Aug 03 – Aug 09, 2026)
 
 ## Objective
 Close out the remaining Module 3 deliverables: a working Contact form
