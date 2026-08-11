@@ -522,3 +522,44 @@ function updateNavbarAuthState() {
 }
 
 document.addEventListener('DOMContentLoaded', updateNavbarAuthState);
+
+// Session expiry handling
+function decodeJwtPayload(token) {
+  try {
+    const payloadBase64 = token.split('.')[1];
+    const decoded = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
+    return JSON.parse(decoded);
+  } catch (e) {
+    return null;
+  }
+}
+
+function isTokenExpired(token) {
+  const payload = decodeJwtPayload(token);
+  if (!payload || !payload.exp) return true;
+  return Date.now() >= payload.exp * 1000;
+}
+
+// Runs on every page load - clears a dead session before anything else renders.
+function checkSessionValidity() {
+  const token = localStorage.getItem('shopsphere_token');
+  if (token && isTokenExpired(token)) {
+    localStorage.removeItem('shopsphere_token');
+    localStorage.removeItem('shopsphere_user');
+  }
+}
+
+// Call from any fetch's error handling when the backend itself returns 401
+// (e.g. token expired mid-session) - logs out and sends the user to log back in.
+function handleAuthError(status) {
+  if (status === 401) {
+    localStorage.removeItem('shopsphere_token');
+    localStorage.removeItem('shopsphere_user');
+    alert('Your session has expired. Please log in again.');
+    window.location.href = 'signup.html';
+    return true;
+  }
+  return false;
+}
+
+document.addEventListener('DOMContentLoaded', checkSessionValidity, { once: true });

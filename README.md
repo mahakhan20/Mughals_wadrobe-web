@@ -114,6 +114,10 @@ Test these using **Postman** or **curl** while the server is running.
 - [Day 15 – Login (JWT) & Signup/Login Page](docs/day15.md)
 - [Day 16 – Contact Backend, Navbar Login State, Protected Admin Routes & Cart Redesign](docs/day16.md)
 
+## Module 4 Progress
+- [Day 17 – Responsive Re-Test & Session Expiry Handling](docs/day17.md)
+- [Day 18 – Fresh End-to-End Setup Test](docs/day18.md)
+
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)
 - **Backend:** Node.js, Express.js
