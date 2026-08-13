@@ -52,7 +52,7 @@ function buildProductCard(product) {
     </div>`;
 }
 
-// ---- Shop page: fetch and render all products ----
+//Shop page: fetch and render all products 
 async function loadShopProducts() {
   const container = document.getElementById('shop-products');
   if (!container) return; // not on the Shop page
@@ -75,7 +75,7 @@ async function loadShopProducts() {
   }
 }
 
-// ---- Single Product page: fetch and render one product by ?id= ----
+//Single Product page: fetch and render one product by ?id= 
 async function loadSingleProduct() {
   const detailsSection = document.getElementById('single-pro-details');
   if (!detailsSection) return;

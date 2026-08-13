@@ -41,9 +41,9 @@ const addItem = async (req, res) => {
 
 const updateItem = async (req, res) => {
   try {
-    const { quantity } = req.body;
-    if (!quantity || quantity < 1) {
-      return res.status(400).json({ success: false, message: "A valid quantity (1 or more) is required" });
+    const quantity = Number(req.body.quantity);
+    if (!Number.isFinite(quantity) || quantity < 1 || !Number.isInteger(quantity)) {
+      return res.status(400).json({ success: false, message: "A valid whole number quantity (1 or more) is required" });
     }
     const cart = await findOrCreateCart(req.userId);
     const item = cart.items.find((i) => i.product.toString() === req.params.productId);

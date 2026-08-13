@@ -117,6 +117,8 @@ Test these using **Postman** or **curl** while the server is running.
 ## Module 4 Progress
 - [Day 17 – Responsive Re-Test & Session Expiry Handling](docs/day17.md)
 - [Day 18 – Fresh End-to-End Setup Test](docs/day18.md)
+- [Day 19 – Edge-Case & Error-Handling Pass](docs/day19.md)
+- [Day 20 – Code Cleanup & Repository Organization](docs/day20.md)
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)

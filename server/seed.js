@@ -1,8 +1,4 @@
 // Run this once to populate your local MongoDB with sample products
-// that match the ones already shown in the frontend (client/index.html, shop.html).
-//
-// Usage:
-//   node seed.js
 
 require("dotenv").config();
 const mongoose = require("mongoose");

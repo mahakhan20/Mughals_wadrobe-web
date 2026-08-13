@@ -1,6 +1,5 @@
 const Product = require("../models/Product");
 
-// @desc    Get all products
 // @route   GET /api/products
 const getAllProducts = async (req, res) => {
   try {
@@ -11,7 +10,6 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// @desc    Get a single product by ID
 // @route   GET /api/products/:id
 const getProductById = async (req, res) => {
   try {
@@ -26,7 +24,6 @@ const getProductById = async (req, res) => {
   }
 };
 
-// @desc    Create a new product (admin)
 // @route   POST /api/products
 const createProduct = async (req, res) => {
   try {
@@ -46,7 +43,6 @@ const createProduct = async (req, res) => {
   }
 };
 
-// @desc    Update an existing product (admin)
 // @route   PUT /api/products/:id
 const updateProduct = async (req, res) => {
   try {
