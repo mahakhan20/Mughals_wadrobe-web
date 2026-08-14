@@ -93,6 +93,8 @@ like VS Code's "Live Server" extension for the best experience.
 Test these using **Postman** or **curl** while the server is running.
 
 ## Progress Log
+
+## Module 1 Progress
 - [Day 1 – Requirement Gathering & Wireframing](docs/day1.md)
 - [Day 2 – Wireframe Finalization & Folder Architecture](docs/day2.md)
 - [Day 3 – Repo Setup & Homepage Development](docs/day3.md)
@@ -113,12 +115,25 @@ Test these using **Postman** or **curl** while the server is running.
 - [Day 14 – Signup Backend (bcrypt)](docs/day14.md)
 - [Day 15 – Login (JWT) & Signup/Login Page](docs/day15.md)
 - [Day 16 – Contact Backend, Navbar Login State, Protected Admin Routes & Cart Redesign](docs/day16.md)
+- [Module 3 – Complete Summary Report](docs/module3-summary.md)
 
 ## Module 4 Progress
 - [Day 17 – Responsive Re-Test & Session Expiry Handling](docs/day17.md)
 - [Day 18 – Fresh End-to-End Setup Test](docs/day18.md)
 - [Day 19 – Edge-Case & Error-Handling Pass](docs/day19.md)
 - [Day 20 – Code Cleanup & Repository Organization](docs/day20.md)
+- [Day 21 – Final Documentation Consolidation](docs/day21.md)
+- [Module 4 – Complete Summary Report](docs/module4-summary.md)
+
+## Known Limitations & Future Improvements
+- This is a local development build only - no live/production deployment.
+- No payment gateway integration - checkout captures shipping details
+  only, no actual payment processing.
+- Shipping is a flat rate (free on first order, Rs 200 after), not
+  calculated from real courier/distance data.
+- No "forgot password" / password reset flow.
+- No admin dashboard - product management is done directly via the API
+  (e.g. Postman) rather than through a UI, by design choice.
 
 ## Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6+) — fully responsive (mobile, tablet, desktop)
