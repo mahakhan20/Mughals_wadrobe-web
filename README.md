@@ -94,6 +94,9 @@ Test these using **Postman** or **curl** while the server is running.
 
 ## Progress Log
 
+## Final Project Report
+- [Complete Module 1–4 Consolidated Report](docs/Final-Project-Report.md)
+
 ## Module 1 Progress
 - [Day 1 – Requirement Gathering & Wireframing](docs/day1.md)
 - [Day 2 – Wireframe Finalization & Folder Architecture](docs/day2.md)
@@ -123,6 +126,7 @@ Test these using **Postman** or **curl** while the server is running.
 - [Day 19 – Edge-Case & Error-Handling Pass](docs/day19.md)
 - [Day 20 – Code Cleanup & Repository Organization](docs/day20.md)
 - [Day 21 – Final Documentation Consolidation](docs/day21.md)
+- [Day 22 – Final Push & Submission](docs/day22.md)
 - [Module 4 – Complete Summary Report](docs/module4-summary.md)
 
 ## Known Limitations & Future Improvements
